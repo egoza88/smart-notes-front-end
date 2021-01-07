@@ -65,12 +65,16 @@ class App extends React.Component {
       timestamp: Math.floor(Date.now() / 1000)
     }, options)
     .then(function (response) {
-      console.log(response);
+      console.log("SENDED");
     })
     .catch(function (error) {
-      console.log(error);
+      console.log("ERROR");
     });
+
+    this.state.selectedNote.title = noteObj.title;
+    this.state.selectedNote.body = noteObj.body;
   }
+  
   newNote = async (title) => {
     const note = {
       id: '0',
@@ -109,7 +113,7 @@ class App extends React.Component {
       this.selectNote(this.state.notes[this.state.selectedNoteIndex - 1], this.state.selectedNoteIndex - 1) :
       this.setState({ selectedNoteIndex: null, selectedNote: null });
     }
-    
+
     axios.delete('https://secure-escarpment-47914.herokuapp.com/notes/delete/' + note.id, {
       headers: {
         "Content-Type": "application/json"
