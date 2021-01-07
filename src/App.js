@@ -53,26 +53,30 @@ class App extends React.Component {
   }
 
   selectNote = (note, index) => this.setState({ selectedNoteIndex: index, selectedNote: note });
-  noteUpdate = (id, noteObj) => {
+  noteUpdate = async (id, noteObj) => {
     const options = {
       headers: {'Content-Type': 'application/json'}
     };
 
-    axios.post('https://secure-escarpment-47914.herokuapp.com/notes/save/', {
+    var data = await axios.post('https://secure-escarpment-47914.herokuapp.com/notes/save/', {
       id: id,
       header: noteObj.title,
       content: noteObj.body,
       timestamp: Math.floor(Date.now() / 1000)
     }, options)
     .then(function (response) {
+      console.log(response.data);
       console.log("SENDED");
+      return response.data;
     })
     .catch(function (error) {
       console.log("ERROR");
     });
 
     this.state.selectedNote.title = noteObj.title;
-    this.state.selectedNote.body = noteObj.body;
+    this.state.selectedNote.body = data.content;
+    // this.componentDidMount();
+    console.log(data.content);
   }
   
   newNote = async (title) => {
